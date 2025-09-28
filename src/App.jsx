@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Products from './pages/Products';
@@ -8,7 +8,6 @@ import BannerAds from './pages/BannerAds';
 
 const styles = {
   mainLayout: {
-
     display: 'flex',
     width: '100vw',
     minHeight: '100vh', 
@@ -16,8 +15,8 @@ const styles = {
     padding: 0,
   },
   contentArea: {
-    flexGrow: 1, // বাকি সমস্ত উপলব্ধ স্থান দখল করবে
-    width: '100%', // এটিও বাকি স্ক্রিন জুড়েই থাকবে
+    flexGrow: 1,
+    width: '100%',
     paddingLeft: '50px',
     paddingRight: '50px',
     paddingTop: '20px', 
@@ -29,7 +28,7 @@ const styles = {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div style={styles.mainLayout}>
         <Sidebar />
         <main style={styles.contentArea}>
@@ -42,7 +41,7 @@ function App() {
           </Routes>
         </main>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
