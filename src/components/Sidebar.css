@@ -1,0 +1,60 @@
+/* src/components/Sidebar.css (ডেস্কটপ স্ক্রিনের জন্য আপডেট) */
+
+.sidebar {
+  width: 350px;
+  padding: 20px;
+  background-color: white;
+  /* এখানে color: white বাদ দেওয়া হয়েছে, কারণ ব্যাকগ্রাউন্ড সাদা */
+  min-height: 100vh;
+  border-right: 1px solid #ccc;
+  
+  /* ✨ নতুন যোগ করা হয়েছে: ফন্ট সাইজ এবং ফন্ট ফ্যামিলি */
+  font-family: Arial, sans-serif; 
+  font-size: 1rem; /* Base font size (সাধারণত 16px) */
+}
+
+/* Header/Title এর জন্য ফন্ট সাইজ */
+.sidebar h3 {
+    font-size: 1.25rem; /* প্রায় 20px */
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #333; /* Dark text for title */
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-link {
+    /* টেক্সটের কালার আগের মতোই #6B6B6B থাকবে */
+    color: #6B6B6B;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 4px;
+    cursor: default; 
+    
+    /* ✨ টেক্সট ও আইকনের জন্য ফন্ট সাইজ */
+    font-size: 0.95rem; /* slightly smaller than base */
+    line-height: 1.5; /* টেক্সট পঠনযোগ্য রাখতে */
+}
+
+/* আইকন এবং টেক্সটের মধ্যে দূরত্ব */
+.sidebar-link .icon {
+    margin-right: 12px;
+    /* ✨ আইকনের সাইজ: টেক্সট থেকে সামান্য বড় রাখা হলো */
+    font-size: 1.15rem; 
+}
+.sidebar-link.active {
+    background-color: #EDF2F6;
+    color: #1876f2;
+    font-weight: bold;
+    cursor: default;
+}
+
+.sidebar-link:hover:not(.active) {
+    background-color: #EDF2F6; 
+}

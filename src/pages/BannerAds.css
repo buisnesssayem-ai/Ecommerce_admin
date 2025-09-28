@@ -1,0 +1,272 @@
+/* --- প্রধান ধারক স্টাইল --- */
+.admin-dashboard-container {
+    background-color: #f8f8f8;
+}
+
+.image-uploader-container {
+  max-width: 800px; 
+  margin: 30px auto; 
+}
+.header {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+.section-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    
+    padding-left: 15px;
+    color: #444;
+}
+
+/* --- আপলোড বক্স স্টাইল (আপনার অনুরোধ অনুসারে) --- */
+.upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  border: 2px dashed #dcdcdc; /* বর্ডার একটু গাড় করা হয়েছে */
+  border-radius: 12px; /* কোণা আরও গোলাকার */
+  background-color: #fff; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* শ্যাডো উন্নত */
+  transition: border-color 0.3s;
+}
+.upload-box:hover {
+    border-color: #9370DB;
+}
+
+.icon-placeholder { margin-bottom: 15px; }
+.upload-text {
+  font-size: 0.95em;
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 25px 0;
+  max-width: 450px;
+}
+
+/* "Add Image" বাটন স্টাইল */
+.add-image-button {
+  background-color: #f0f0ff; 
+  color: #9370db; 
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-image-button:hover:not(:disabled) {
+  background-color: #e0e0ff; 
+  transform: translateY(-1px);
+}
+.add-image-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --- প্রিভিউ সেকশন স্টাইল --- */
+.previews-section {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.previews-section h3 {
+    font-size: 1.1em;
+    color: #444;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.image-previews-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; 
+    margin-bottom: 25px;
+}
+
+/* সুন্দর প্রিভিউ সাইজ সেট করা হয়েছে */
+.image-preview-item {
+    width: 150px; /* প্রিভিউ ইমেজের সুন্দর চওড়া */
+    height: 80px; /* উচ্চতা */
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+/* প্রিভিউ বাতিল করার বাটন */
+.cancel-preview-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    line-height: 1;
+    z-index: 5;
+    padding: 0;
+}
+.cancel-preview-button:hover {
+    background-color: #cc0000;
+    transform: scale(1.1);
+}
+
+/* --- আকর্ষণীয় আপলোড বাটন ডিজাইন --- */
+.upload-all-button {
+    width: 100%;
+    background: #000; /* গ্রেডিয়েন্ট */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(147, 112, 219, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.upload-all-button:hover:not(:disabled) {
+    background: linear-gradient(45deg, #7b5ed6, #6a4ec9);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(147, 112, 219, 0.6);
+}
+
+.upload-all-button:disabled {
+    background: #ccc;
+    box-shadow: none;
+    cursor: not-allowed;
+    color: #666;
+}
+
+/* স্পিনার স্টাইল (আপলোডিং এর সময়) */
+.spinner {
+  animation: rotate 2s linear infinite;
+  margin: -10px 0;
+  width: 20px;
+  height: 20px;
+}
+.spinner .path {
+  stroke: #fff;
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+@keyframes dash {
+  0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+  50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+  100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+}
+
+
+/* --- ব্যানার স্লাইডার স্টাইল (ম্যানুয়াল স্ক্রল) --- */
+.banner-slider-container {
+    max-width: 100%; 
+    overflow: hidden; 
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding-top: 15px;
+    user-select: none; 
+    cursor: grab;
+}
+.slider-track {
+    display: flex;
+}
+.slide-item {
+    box-sizing: border-box;
+    position: relative;
+    height: 323px; 
+    overflow: hidden;
+}
+
+.banner-image-display {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.delete-icon-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    z-index: 10;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
+}
+
+.delete-icon-button:hover {
+    background-color: #cc0000; 
+    transform: scale(1.1);
+}
+
+
+/* ডট নেভিগেশন */
+.slider-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.dot.active {
+    background-color: white;
+    transform: scale(1.2);
+}
