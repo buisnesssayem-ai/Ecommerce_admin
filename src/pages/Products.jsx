@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
     FaAngleDown, FaBold, FaItalic, FaUnderline, FaQuoteRight, 
     FaFont, FaAlignLeft, FaAlignCenter, FaLink, FaSuperscript, 
-    FaListUl, FaListOl, FaAngleUp, FaImage, FaTimes // FaTimes (Close Icon) যুক্ত করা হলো
+    FaListUl, FaListOl, FaAngleUp, FaImage, FaTimes
 } from 'react-icons/fa'; 
 
 // 🌟🌟🌟 Firebase সংযোগ 🌟🌟🌟
@@ -20,34 +20,46 @@ import './Product.css';
 
 // ফর্মের প্রাথমিক অবস্থা (রিসেট করার জন্য)
 const INITIAL_PRODUCT_DATA = {
-    // ... অন্যান্য ফিল্ড ...
+    // ⭐️ ডেলিভারি ফিল্ড ⭐️
+    deliveryCharge: 0, 
+    deliveryType: 'CALCULATED',
+    
     itemName: '', shortDescription: '', productDescription: '', sellPrice: '', regularPrice: '', buyingPrice: '',
     productSerial: 0, skuCode: '', unitName: '', quantityStock: 0, warranty: '', initialSoldCount: 0,
     brandName: '', condition: 'New', productStatus: 'ACTIVE', categoryId: '', 
-    // 🌟 URL এখন স্ট্রিং এর বদলে একটি অ্যারে
     imageUrls: [], 
 };
 
+// টোস্ট কম্পোনেন্ট
+const Toast = ({ message, type }) => {
+    return (
+        <div className={`toast-message toast-${type}`}>
+            {message}
+        </div>
+    );
+};
+
+
 const AddProductPage = () => {
     // ------------------------------------
-    // 1. স্টেট ম্যানেজমেন্ট
+    // 1. স্টেট ম্যানেজমেন্ট (অপরিবর্তিত)
     // ------------------------------------
     const [productData, setProductData] = useState(INITIAL_PRODUCT_DATA);
     const [categories, setCategories] = useState([]);
     const [isLoadingCategories, setIsLoadingCategories] = useState(true);
     const [isCategorySectionOpen, setIsCategorySectionOpen] = useState(true); 
     
-    // 🌟🌟🌟 ইমেজ ফাইল এখন অ্যারে হিসেবে থাকবে 🌟🌟🌟
-    // { file: FileObject, preview: URL, id: uniqueId }
     const [imageFiles, setImageFiles] = useState([]); 
     const [isUploading, setIsUploading] = useState(false); 
 
     const [toast, setToast] = useState({ visible: false, message: '', type: '' });
 
-    // ... (useEffect এবং handleInputChange, toggleCategorySection, showToast ফাংশনগুলি একই থাকবে) ...
-    // --- (পূর্ববর্তী কোড থেকে অনুলিপি) ---
 
-    // ক্যাটেগরি লোড করার লজিক (আগের মতোই)
+    // ------------------------------------
+    // 2. useEffect এবং হ্যান্ডলার ফাংশন (অপরিবর্তিত)
+    // ------------------------------------
+    
+    // ক্যাটেগরি লোড করার লজিক
     useEffect(() => {
         const fetchCategories = async () => {
             setIsLoadingCategories(true);
@@ -98,13 +110,14 @@ const AddProductPage = () => {
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
-        const numericFields = ['sellPrice', 'regularPrice', 'buyingPrice', 'productSerial', 'quantityStock', 'initialSoldCount'];
+        const numericFields = ['sellPrice', 'regularPrice', 'buyingPrice', 'productSerial', 'quantityStock', 'initialSoldCount', 'deliveryCharge'];
         const newValue = numericFields.includes(id) ? Number(value) : value;
 
         setProductData(prevData => ({
             ...prevData,
             [id]: newValue, 
-            categoryId: id === 'categorySelect' ? value : prevData.categoryId 
+            categoryId: id === 'categorySelect' ? value : prevData.categoryId,
+            deliveryType: id === 'deliveryType' ? value : prevData.deliveryType,
         }));
     };
     
@@ -113,9 +126,7 @@ const AddProductPage = () => {
     };
 
 
-    // ------------------------------------
-    // 3. ইমেজ আপলোড হ্যান্ডলার (মাল্টিপল ফাইল)
-    // ------------------------------------
+    // ইমেজ আপলোড হ্যান্ডলার এবং ফাংশন (অপরিবর্তিত)
     const handleImageSelect = (e) => {
         const files = Array.from(e.target.files);
         
@@ -123,22 +134,18 @@ const AddProductPage = () => {
             const newImageFiles = files.map(file => ({
                 file: file,
                 preview: URL.createObjectURL(file),
-                id: Date.now() + Math.random(), // ইউনিক ID
+                id: Date.now() + Math.random(), 
             }));
             
-            // নতুন ফাইলগুলিকে বিদ্যমান অ্যারেতে যুক্ত করা
             setImageFiles(prevFiles => [...prevFiles, ...newImageFiles]);
         }
-        // ফাইল ইনপুট রিসেট করা যাতে একই ফাইল বারবার সিলেক্ট করা যায়
         e.target.value = null; 
     };
 
-    // 🌟🌟🌟 ইমেজ ডিলিট হ্যান্ডলার (প্রিভিউ থেকে) 🌟🌟🌟
     const handleRemoveImage = (idToRemove) => {
         setImageFiles(prevFiles => prevFiles.filter(file => file.id !== idToRemove));
     };
 
-    // 🌟🌟🌟 ইমেজ আপলোড ফাংশন (একাধিক ফাইল আপলোড) 🌟🌟🌟
     const uploadImages = async (files) => {
         if (files.length === 0) return [];
         
@@ -155,7 +162,7 @@ const AddProductPage = () => {
 
             const imageUrls = await Promise.all(uploadPromises);
             setIsUploading(false);
-            return imageUrls; // URL-এর একটি অ্যারে রিটার্ন করবে
+            return imageUrls; 
         } catch (error) {
             console.error("Error uploading images to Firebase Storage:", error);
             setIsUploading(false);
@@ -164,21 +171,19 @@ const AddProductPage = () => {
         }
     };
 
-    // ------------------------------------
-    // 4. প্রোডাক্ট সেভ ফাংশন (Firestore-এ লেখা)
-    // ------------------------------------
+    // প্রোডাক্ট সেভ ফাংশন (অপরিবর্তিত)
     const handleSaveProduct = async () => {
         if (!productData.itemName || !productData.categoryId || productData.sellPrice <= 0) {
             showToast("অনুগ্রহ করে আইটেমের নাম, ক্যাটেগরি এবং বর্তমান দাম পূরণ করুন।", 'error'); 
             return;
         }
         
-        // 1. 🌟 ইমেজ অ্যারে আপলোড করা
+        // 1. ইমেজ অ্যারে আপলোড করা
         let finalImageUrls = productData.imageUrls;
         
         if (imageFiles.length > 0) {
             const uploadedUrls = await uploadImages(imageFiles);
-            if (!uploadedUrls) return; // আপলোড ব্যর্থ হলে সেভ বন্ধ
+            if (!uploadedUrls) return;
             finalImageUrls = uploadedUrls;
         }
 
@@ -186,7 +191,10 @@ const AddProductPage = () => {
             // 2. ডেটা অবজেক্ট তৈরি করা
             const finalProductData = {
                 ...productData,
-                // 🌟 ইমেজ URL এর অ্যারে সেভ করা হলো
+                // ডেলিভারি ডেটা যুক্ত এবং কন্ডিশনাল সেট করা
+                deliveryCharge: productData.deliveryType === 'FIXED_CHARGE' ? Number(productData.deliveryCharge) || 0 : 0,
+                deliveryType: productData.deliveryType,
+                
                 imageUrls: finalImageUrls, 
                 sellPrice: Number(productData.sellPrice),
                 regularPrice: Number(productData.regularPrice) || 0,
@@ -200,7 +208,7 @@ const AddProductPage = () => {
             await addDoc(collection(db, "products"), finalProductData);
             
             showToast(`Product '${productData.itemName}' successfully saved!`, 'success');
-            resetForm(); // ফর্ম রিসেট করা হলো
+            resetForm(); 
 
         } catch (error) {
             console.error("Error adding product: ", error);
@@ -209,13 +217,13 @@ const AddProductPage = () => {
     };
     
     // ------------------------------------
-    // 5. রেন্ডারিং অংশ
+    // 5. রেন্ডারিং অংশ (পরিবর্তিত)
     // ------------------------------------
     
   return (
     <div className="add-product-main-content">
         
-        {/* 🌟 টোস্ট মেসেজ কম্পোনেন্ট */}
+        {/* টোস্ট মেসেজ কম্পোনেন্ট */}
         {toast.visible && <Toast message={toast.message} type={toast.type} />}
 
       <div className="action-buttons-container">
@@ -240,7 +248,7 @@ const AddProductPage = () => {
 
       <div className="mainContent">
         
-        {/* 1. Categories Section (একই থাকবে) */}
+        {/* 1. Categories Section */}
         <section className="sidebar-section category-selection-section">
             <div className="section-header" onClick={toggleCategorySection}> 
                 <h3 className="section-title">Category <span className="required">*</span></h3>
@@ -263,7 +271,7 @@ const AddProductPage = () => {
             )}
         </section>
         
-        {/* 2. General Information Section (একই থাকবে) */}
+        {/* 2. General Information Section */}
         <section className="product-form-section"> 
             <div className="section-header"> <h3 className="section-title">General Information</h3> <span className="toggle-icon"><FaAngleDown /></span> </div>
             <div className="section-content">
@@ -273,12 +281,12 @@ const AddProductPage = () => {
             </div>
         </section>
         
-        {/* 3. Media Section (মাল্টিপল ইমেজ প্রিভিউ সহ পরিবর্তিত) */}
+        {/* 3. Media Section */}
         <section className="media-form-section">
             <div className="section-header"> <h3 className="section-title">Media ({imageFiles.length} Images)</h3> <span className="toggle-icon"><FaAngleUp /></span> </div>
             <div className="section-content">
                  
-                {/* 🌟🌟🌟 মাল্টিপল ইমেজ প্রিভিউ এরিয়া 🌟🌟🌟 */}
+                {/* মাল্টিপল ইমেজ প্রিভিউ এরিয়া */}
                 <div className="image-previews-grid">
                     {imageFiles.map((fileObj) => (
                         <div key={fileObj.id} className="image-preview-container">
@@ -295,13 +303,12 @@ const AddProductPage = () => {
                 </div>
                 
                 <div className="upload-box image-upload-box">
-                    {/* লুকানো ফাইল ইনপুট (multiple অ্যাট্রিবিউট সহ) */}
                     <input 
                         type="file" 
                         id="imageUpload" 
                         accept="image/jpeg, image/png" 
                         onChange={handleImageSelect}
-                        multiple // 👈 এই অ্যাট্রিবিউট মাল্টিপল ফাইল সিলেকশনের জন্য
+                        multiple 
                         style={{ display: 'none' }} 
                         disabled={isUploading}
                     />
@@ -319,7 +326,7 @@ const AddProductPage = () => {
             </div>
         </section>
         
-        {/* 4. Pricing Section (একই থাকবে) */}
+        {/* 4. Pricing Section (ডেলিভারি অপশন ছাড়া) */}
         <section className="pricing-form-section product-form-section">
             <div className="section-header"><h3 className="section-title">Pricing</h3><span className="toggle-icon"><FaAngleUp /></span></div>
             <div className="section-content">
@@ -328,8 +335,45 @@ const AddProductPage = () => {
                 <div className="form-group"><label htmlFor="buyingPrice">Buying Price (Optional)</label><input type="number" id="buyingPrice" placeholder="Buying Price (Optional)" className="price-input" min="0" value={productData.buyingPrice} onChange={handleInputChange}/></div>
             </div>
         </section>
-    
-        {/* 5. Inventory Section (একই থাকবে) */}
+        
+              {/* 🌟🌟🌟 5. Delivery Settings Section (আলাদা করা হয়েছে) 🌟🌟🌟 */}
+        <section className="delivery-settings-section product-form-section">
+            <div className="section-header"><h3 className="section-title">Delivery Settings</h3><span className="toggle-icon"><FaAngleUp /></span></div>
+            <div className="section-content">
+                <div className="form-group">
+                    <label htmlFor="deliveryType">Delivery Type</label>
+                    <select 
+                        id="deliveryType" 
+                        className="price-input" // 👈 price-input ক্লাসটি ব্যবহার করা হয়েছে
+                        value={productData.deliveryType} 
+                        onChange={handleInputChange}
+                    >
+                        <option value="CALCULATED">Standard Calculated (Default)</option>
+                        <option value="FIXED_CHARGE">Fixed Charge for this Item</option>
+                        <option value="FREE_DELIVERY">Free Delivery</option>
+                    </select>
+                </div>
+                
+                {productData.deliveryType === 'FIXED_CHARGE' && (
+                    <div className="form-group">
+                        <label htmlFor="deliveryCharge">Delivery Charge for this Item (৳)</label>
+                        <input 
+                            type="number" 
+                            id="deliveryCharge" 
+                            placeholder="Specific Delivery Charge" 
+                            className="price-input" // 👈 price-input ক্লাসটি ব্যবহার করা হয়েছে
+                            min="0"
+                            value={productData.deliveryCharge} 
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                )}
+            </div>
+        </section>
+
+
+        
+        {/* 6. Inventory Section */}
         <section className="inventory-form-section product-form-section">
             <div className="section-header"><h3 className="section-title">Inventory</h3><span className="toggle-icon"><FaAngleUp /></span> </div>
             <div className="section-content">
@@ -342,7 +386,7 @@ const AddProductPage = () => {
             </div>
         </section>
         
-        {/* 6. Brand, 7. Condition, 8. Status Sections (একই থাকবে) */}
+        {/* 7. Brand, 8. Condition, 9. Status Sections */}
         <section className="sidebar-section brand-section">
               <div className="section-header"><h3 className="section-title">Brand (SEO & Data Feed)</h3><span className="toggle-icon"><FaAngleUp /></span></div>
               <div className="sidebar-content"><input type="text" placeholder="Brand Name" className="sidebar-input brand-input" id="brandName" value={productData.brandName} onChange={handleInputChange}/></div>
@@ -368,15 +412,6 @@ const AddProductPage = () => {
       </div>
     </div>
   );
-};
-
-// টোস্ট কম্পোনেন্ট (একই থাকবে)
-const Toast = ({ message, type }) => {
-    return (
-        <div className={`toast-message toast-${type}`}>
-            {message}
-        </div>
-    );
 };
 
 export default AddProductPage;

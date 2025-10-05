@@ -1,16 +1,15 @@
 /* src/components/Sidebar.css (ডেস্কটপ স্ক্রিনের জন্য আপডেট) */
 
 .sidebar {
-  width: 350px;
+  width: 300px;
   padding: 20px;
   background-color: white;
-  /* এখানে color: white বাদ দেওয়া হয়েছে, কারণ ব্যাকগ্রাউন্ড সাদা */
+
   min-height: 100vh;
   border-right: 1px solid #ccc;
   
-  /* ✨ নতুন যোগ করা হয়েছে: ফন্ট সাইজ এবং ফন্ট ফ্যামিলি */
   font-family: Arial, sans-serif; 
-  font-size: 1rem; /* Base font size (সাধারণত 16px) */
+  font-size: 1rem; 
 }
 
 /* Header/Title এর জন্য ফন্ট সাইজ */

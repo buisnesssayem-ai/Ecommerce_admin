@@ -548,3 +548,55 @@
     padding: 0;
     line-height: 1;
 }
+
+/* Delivery Settings Section-এর জন্য স্টাইল */
+
+/* সেকশনের টাইটেল */
+.delivery-settings-section .section-header {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+/* ফর্ম গ্রুপের জন্য সাধারণ স্টাইল (প্রাইসিং সেকশনের মতো) */
+.delivery-settings-section .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.delivery-settings-section label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* ইনপুট এবং সিলেক্ট ফিল্ডের ডিজাইন */
+.delivery-settings-section .price-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #fff;
+    -webkit-appearance: none; /* iOS-এ কাস্টমাইজেশনের জন্য */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.delivery-settings-section .price-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    outline: none;
+}
+
+/* ড্রপডাউন এর জন্য অতিরিক্ত স্টাইল (যদি আপনি কাস্টম অ্যারো চান) */
+.delivery-settings-section select.price-input {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px; /* অ্যারোর জন্য জায়গা */
+}
